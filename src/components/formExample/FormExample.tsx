@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   Button,
@@ -27,8 +27,6 @@ export interface PersonDataToSell {
 }
 
 const FormExample = () => {
-  const [saved, setSaved] = useState(false);
-
   const [person, setPerson] = useState<PersonDataToSell>({
     firstName: '',
     lastName: '',
@@ -94,7 +92,7 @@ const FormExample = () => {
   };
 
   const handleSave = async () => {
-    await validate(person, () => setSaved(true));
+    await validate(person, () => alert('Salvestatud!'));
   };
 
   return (
