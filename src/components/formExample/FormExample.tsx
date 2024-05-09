@@ -90,7 +90,7 @@ const FormExample = () => {
   };
 
   const handleSave = async () => {
-    await validate(person, () => alert('Salvestatud!'));
+    validate(person, () => alert('Salvestatud!'));
   };
 
   return (
