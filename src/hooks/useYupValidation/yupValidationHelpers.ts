@@ -3,7 +3,6 @@ import { MappedErrors } from './useYupValidation.types';
 
 export const mapValidationErrors = (yupError): MappedErrors => {
   let errors = {};
-  console.log(yupError);
   yupError.inner?.forEach((valErr, index) => {
     errors[valErr.path] = yupError.errors[index];
   });
