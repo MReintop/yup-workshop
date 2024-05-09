@@ -101,7 +101,10 @@ const FormExample = () => {
         Sisesta oma andmed, me ei müü neid maha
       </Typography>
 
-      <Button onClick={handleSave}>Salvesta</Button>
+      <Button variant="contained" color="success" onClick={handleSave}>
+        Salvesta
+      </Button>
+
       <Grid
         container
         spacing={3}
