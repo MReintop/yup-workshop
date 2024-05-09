@@ -22,7 +22,6 @@ export interface PersonDataToSell {
   phoneNr: string;
   age?: number;
   gender: Gender;
-  dependantsCount: number;
   dependants: ChildData[];
 }
 
@@ -34,7 +33,6 @@ const FormExample = () => {
     phoneNr: '',
     age: undefined,
     gender: { value: Genders.Male, genderSpecified: undefined },
-    dependantsCount: 0,
     dependants: [],
   });
 
