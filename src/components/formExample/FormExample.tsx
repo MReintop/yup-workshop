@@ -33,7 +33,7 @@ const FormExample = () => {
     idCode: '',
     phoneNr: '',
     age: undefined,
-    gender: { value: undefined, genderSpecified: undefined },
+    gender: { value: Genders.Male, genderSpecified: undefined },
     dependantsCount: 0,
     dependants: [],
   });
@@ -96,7 +96,7 @@ const FormExample = () => {
   };
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md" data-testid="form-example-container">
       <Typography variant="h4" sx={{ m: 2 }}>
         Sisesta oma andmed, me ei müü neid maha
       </Typography>
