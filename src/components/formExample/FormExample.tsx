@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Container,
   Button,
@@ -15,9 +15,11 @@ import { useYupValidation } from '../../hooks/useYupValidation/useYupValidation'
 import { formSchema } from './FormSchema';
 import { ChildData, Gender, Genders } from './types';
 import AddIcon from '@mui/icons-material/Add';
+
 export interface PersonDataToSell {
   firstName: string;
   lastName: string;
+  email: string;
   idCode: string;
   phoneNr: string;
   age?: number;
@@ -29,10 +31,11 @@ const FormExample = () => {
   const [person, setPerson] = useState<PersonDataToSell>({
     firstName: '',
     lastName: '',
+    email: '',
     idCode: '',
     phoneNr: '',
     age: undefined,
-    gender: { value: Genders.Male, genderSpecified: undefined },
+    gender: { value: undefined, genderSpecified: undefined },
     dependants: [],
   });
 
@@ -41,13 +44,6 @@ const FormExample = () => {
   const setPersonValue = (property: string, value: string | ChildData[]) => {
     clearErrors(property);
     setPerson((prev) => ({ ...prev, [property]: value }));
-  };
-
-  const setPersonGenderValue = (property: string, value: any) => {
-    setPerson((prev) => ({
-      ...prev,
-      gender: { ...person.gender, [property]: value },
-    }));
   };
 
   const setChildValue = (
@@ -89,9 +85,16 @@ const FormExample = () => {
     return errors[fieldName];
   };
 
+  const getChildFieldError = (index: number, property: string) =>
+    errors[`dependants[${index}].${property}`];
+
   const handleSave = async () => {
     validate(person, () => alert('Salvestatud!'));
   };
+
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
 
   return (
     <Container maxWidth="md" data-testid="form-example-container">
@@ -141,11 +144,25 @@ const FormExample = () => {
 
           <TextField
             sx={{ my: 1 }}
+            value={person.email}
+            required
+            fullWidth
+            label="E-mail"
+            id="person-email"
+            error={!!getParentFieldError('email')}
+            helperText={getParentFieldError('email')}
+            onChange={(e) => setPersonValue('email', e.target.value)}
+          />
+
+          <TextField
+            sx={{ my: 1 }}
             value={person.idCode}
             required
             fullWidth
             label="Isikukood"
             id="person-id-code"
+            error={!!getParentFieldError('idCode')}
+            helperText={getParentFieldError('idCode')}
             onChange={(e) => setPersonValue('idCode', e.target.value)}
           />
 
@@ -156,6 +173,8 @@ const FormExample = () => {
             fullWidth
             label="Telefoni nr"
             id="person-phone-nr"
+            error={!!getParentFieldError('phoneNr')}
+            helperText={getParentFieldError('phoneNr')}
             onChange={(e) => setPersonValue('phoneNr', e.target.value)}
           />
 
@@ -167,21 +186,32 @@ const FormExample = () => {
             type="number"
             label="Vanus"
             id="person-age"
+            error={!!getParentFieldError('age')}
+            helperText={getParentFieldError('age')}
             onChange={(e) => setPersonValue('age', e.target.value)}
           />
 
-          <FormControl fullWidth error={true} required sx={{ my: 1 }}>
+          <FormControl
+            fullWidth
+            error={!!getParentFieldError('gender.value')}
+            required
+            sx={{ my: 1 }}
+          >
             <InputLabel>Sugu</InputLabel>
             <Select
               id="person-gender"
               value={person.gender.value}
-              onChange={(e) => setPersonGenderValue('value', e.target.value)}
+              onChange={(e) => setPersonValue('gender.value', e.target.value)}
             >
               <MenuItem value={Genders.Male}>Mees</MenuItem>
               <MenuItem value={Genders.Female}>Naine</MenuItem>
               <MenuItem value={Genders.Other}>Muu</MenuItem>
             </Select>
-            {true && <FormHelperText error>Mingi error</FormHelperText>}
+            {!!getParentFieldError('gender.value') && (
+              <FormHelperText error>
+                {getParentFieldError('gender.value')}
+              </FormHelperText>
+            )}
           </FormControl>
 
           {person.gender.value === Genders.Other && (
@@ -191,8 +221,10 @@ const FormExample = () => {
               required
               fullWidth
               label="Täpsusta palun oma sugu"
+              error={!!getParentFieldError('gender.genderSpecified')}
+              helperText={getParentFieldError('gender.genderSpecified')}
               onChange={(e) =>
-                setPersonGenderValue('genderSpecification', e.target.value)
+                setPersonValue('gender.genderSpecified', e.target.value)
               }
             />
           )}
@@ -216,6 +248,8 @@ const FormExample = () => {
                 value={dependant.name}
                 required
                 fullWidth
+                error={!!getChildFieldError(i, 'name')}
+                helperText={getChildFieldError(i, 'name')}
                 label="Lapse nimi"
                 id={`person-dependant-${i + 1}-name`}
                 onChange={(e) => setChildValue(i, 'name', e.target.value)}
@@ -226,6 +260,8 @@ const FormExample = () => {
                 value={dependant.age}
                 required
                 fullWidth
+                error={!!getChildFieldError(i, 'age')}
+                helperText={getChildFieldError(i, 'age')}
                 type="number"
                 label="Lapse Vanus"
                 id={`person-dependant-${i + 1}-age`}

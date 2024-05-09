@@ -49,8 +49,8 @@ describe('Given no values are set', () => {
         await waitFor(() => {
           const { getByText } = within(personFirstNameHelper as HTMLElement);
 
-          const linkElement = getByText('Nõutud väli.');
-          expect(linkElement).toBeInTheDocument();
+          const errorElement = getByText('Nõutud väli.');
+          expect(errorElement).toBeInTheDocument();
         });
       }
     });
@@ -69,8 +69,62 @@ describe('Given no values are set', () => {
         await waitFor(() => {
           const { getByText } = within(personLastNameHelper as HTMLElement);
 
-          const linkElement = getByText('Nõutud väli.');
-          expect(linkElement).toBeInTheDocument();
+          const errorElement = getByText('Nõutud väli.');
+          expect(errorElement).toBeInTheDocument();
+        });
+      }
+    });
+
+    it('Should show error for email field', async () => {
+      let personEmailHelper: HTMLElement | null = null;
+      await waitFor(() => {
+        personEmailHelper = document.getElementById('person-email-helper-text');
+
+        expect(personEmailHelper).toBeInTheDocument();
+      });
+
+      if (personEmailHelper) {
+        await waitFor(() => {
+          const { getByText } = within(personEmailHelper as HTMLElement);
+
+          const errorElement = getByText('Nõutud väli.');
+          expect(errorElement).toBeInTheDocument();
+        });
+      }
+    });
+
+    it('Should show error for idCode field', async () => {
+      let idCodeHelper: HTMLElement | null = null;
+      await waitFor(() => {
+        idCodeHelper = document.getElementById('person-id-code-helper-text');
+
+        expect(idCodeHelper).toBeInTheDocument();
+      });
+
+      if (idCodeHelper) {
+        await waitFor(() => {
+          const { getByText } = within(idCodeHelper as HTMLElement);
+
+          const errorElement = getByText('Nõutud väli.');
+          expect(errorElement).toBeInTheDocument();
+        });
+      }
+    });
+
+    it('Should show error for phoneNr field', async () => {
+      let phoneNrHelper: HTMLElement | null = null;
+      await waitFor(() => {
+        phoneNrHelper = document.getElementById('person-phone-nr-helper-text');
+
+        expect(phoneNrHelper).toBeInTheDocument();
+      });
+
+      if (phoneNrHelper) {
+        await waitFor(() => {
+          const { getByText } = within(phoneNrHelper as HTMLElement);
+
+          const errorElement = getByText('Nõutud väli.');
+          expect(errorElement).toBeInTheDocument();
         });
       }
     });
