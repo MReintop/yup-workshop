@@ -15,8 +15,8 @@ describe('Render test', () => {
   });
 
   it('Should render formexample', () => {
-    const linkElement = screen.getByTestId('form-example-container');
-    expect(linkElement).toBeInTheDocument();
+    const formExampleContainer = screen.getByTestId('form-example-container');
+    expect(formExampleContainer).toBeInTheDocument();
   });
 });
 
